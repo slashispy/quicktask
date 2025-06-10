@@ -6,9 +6,10 @@ import (
 )
 
 type Config struct {
-	MongoURI string
-	MongoDB  string
-	Port     string
+	MongoURI  string
+	MongoDB   string
+	Port      string
+	JWTSecret string
 }
 
 func LoadConfig() *Config {
@@ -16,6 +17,7 @@ func LoadConfig() *Config {
 		MongoURI: mustGetEnv("MONGO_URI"),
 		MongoDB:  mustGetEnv("MONGO_DB_NAME"),
 		Port:     getenv("PORT", "8080"),
+		JWTSecret: mustGetEnv("JWT_SECRET"),
 	}
 	return cfg
 }

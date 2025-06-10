@@ -14,6 +14,7 @@ import (
 	"github.com/slashispy/quicktask/config"
 	"github.com/slashispy/quicktask/internal/database"
 	"github.com/slashispy/quicktask/internal/handlers"
+	"github.com/slashispy/quicktask/internal/middleware"
 	"github.com/slashispy/quicktask/internal/repositories"
 	"github.com/slashispy/quicktask/internal/usecases"
 )
@@ -24,7 +25,7 @@ func main() {
 
 	client, db, err := database.ConnectMongoDB(cfg.MongoURI, cfg.MongoDB)
 	if err != nil {
-		log.Fatal("❌ Failed to connect to MongoDB: %v", err)
+		log.Fatalf("❌ Failed to connect to MongoDB: %v", err)
 	}
 
 	defer func() {
@@ -42,7 +43,11 @@ func main() {
 	r := chi.NewRouter()
 
 	userHandler := handlers.RegisterUserHandler(userUseCase)
-	r.Post("/v1/users", userHandler)
+	
+	r.Group(func(protected chi.Router) {
+		protected.Use(middleware.JWTAuth(cfg.JWTSecret))
+		protected.Post("/v1/users", userHandler)
+	})
 
 	server := &http.Server{
 		Addr:    ":" + cfg.Port,
