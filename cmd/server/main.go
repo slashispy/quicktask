@@ -43,7 +43,14 @@ func main() {
 	r := chi.NewRouter()
 
 	userHandler := handlers.RegisterUserHandler(userUseCase)
-	
+
+	// Health endpoints (no auth): liveness is always OK while the process
+	// serves HTTP; readiness pings MongoDB.
+	r.Get("/health", handlers.HealthHandler())
+	r.Get("/ready", handlers.ReadinessHandler(func(ctx context.Context) error {
+		return client.Ping(ctx, nil)
+	}))
+
 	r.Group(func(protected chi.Router) {
 		protected.Use(middleware.JWTAuth(cfg.JWTSecret))
 		protected.Post("/v1/users", userHandler)
