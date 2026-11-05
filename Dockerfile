@@ -1,4 +1,4 @@
-FROM golang:1.23.4 AS builder
+FROM golang:1.25 AS builder
 
 WORKDIR /app
 
@@ -8,11 +8,11 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o server ./cmd/server
+RUN CGO_ENABLED=0 GOOS=linux go build -o /server ./cmd/server
 
 FROM gcr.io/distroless/static-debian12
 
-COPY --from=builder /app/server /app/server /
+COPY --from=builder /server /server
 
 EXPOSE 8080
 
