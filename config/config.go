@@ -14,9 +14,9 @@ type Config struct {
 
 func LoadConfig() *Config {
 	cfg := &Config{
-		MongoURI: mustGetEnv("MONGO_URI"),
-		MongoDB:  mustGetEnv("MONGO_DB_NAME"),
-		Port:     getenv("PORT", "8080"),
+		MongoURI:  mustGetEnv("MONGO_URI"),
+		MongoDB:   mustGetEnv("MONGO_DB_NAME"),
+		Port:      getenv("PORT", "8080"),
 		JWTSecret: mustGetEnv("JWT_SECRET"),
 	}
 	return cfg
