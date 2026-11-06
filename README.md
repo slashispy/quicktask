@@ -10,6 +10,18 @@ Este repositorio es la **aplicación**. El despliegue (Helm chart, values de Git
 Argo CD y el tooling de KIND) vive en repos separados —ver
 [El circuito GitOps](#el-circuito-gitops).
 
+## Parte del circuito QuickTask GitOps
+
+| Repo | Rol |
+|---|---|
+| **`quicktask`** (este repo) | Aplicación: API Go + MongoDB, JWT, `/health` y `/ready`. |
+| [`helm-chart-generic-app`](https://github.com/slashispy/helm-chart-generic-app) | Helm chart genérico y reutilizable (**cómo** se despliega). |
+| [`gitops-app-values`](https://github.com/slashispy/gitops-app-values) | Values por aplicación (**qué** se despliega). |
+| [`gitops-argocd-apps`](https://github.com/slashispy/gitops-argocd-apps) | App of Apps + ApplicationSet de Argo CD (**quién** reconcilia). |
+| [`kind-gitops-utility-belt`](https://github.com/slashispy/kind-gitops-utility-belt) | Bootstrap del cluster KIND, tutorial y sitio del proyecto. |
+
+📖 [Tutorial paso a paso](https://slashispy.github.io/kind-gitops-utility-belt/tutorial) · 🌐 [Sitio del proyecto](https://slashispy.github.io/kind-gitops-utility-belt/)
+
 ## Stack
 
 - **Go 1.25**
